@@ -1,0 +1,33 @@
+.herramientas h2 {
+  color: #bfdbfe;
+}
+
+.herramientas h3 {
+  color: #93c5fd;
+  font-size: 1.5rem;
+}
+
+.herramientas-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.herramientas .result {
+  overflow-wrap: anywhere;
+}
+
+.herramientas .btn {
+  margin-right: 8px;
+  margin-bottom: 8px;
+}
+
+.herramientas sub {
+  font-size: 0.7em;
+}
+
+@media (max-width: 650px) {
+  .herramientas-grid {
+    grid-template-columns: 1fr;
+  }
+}
