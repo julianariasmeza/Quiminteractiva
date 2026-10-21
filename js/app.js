@@ -21,13 +21,13 @@ const normF=s=>s.replace(/\s+/g,'').replace(/[₀₁₂₃₄₅₆₇₈₉]/g,
 const normN=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\s+/g,' ').replace(/\s*\(\s*/g,'(').replace(/\s*\)\s*/g,')').trim();
 const html=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const sub=s=>html(s).replace(/([0-9]+)/g,'<sub>$1</sub>');
-function buscarFormula(){let entrada=document.querySelector('#formula').value;let especial=window.analizarOxoacido?.(entrada) || window.analizarOxidoEspecial?.(entrada) || window.analizarOxidoMetalico?.(entrada) || window.analizarOxidoNoMetalico?.(entrada) || window.analizarOxidoMetalicoAmpliado?.(entrada) || window.reconocerCompuestoIonico?.(entrada);let c=especial?{f:especial.formula,stock:especial.stock,sist:especial.sistematica || 'No incorporada para este compuesto',trad:especial.tradicional || especial.stock,tipo:especial.tipo,pasos:especial.pasos}:compuestos.find(x=>normF(x.f)===normF(entrada));if(!c){let r=window.analizarOxidoEspecial?.(entrada) || window.analizarOxidoMetalico?.(entrada) || window.analizarOxidoNoMetalico?.(entrada);if(r)c={f:r.formula,stock:r.stock,sist:r.sistematica,trad:r.tradicional,tipo:r.tipo,pasos:r.pasos};}document.querySelector('#resultado').innerHTML=c?`<div class="result"><div class="formula">${sub(c.f)}</div><b>Stock / nombre habitual:</b> ${html(c.stock)}<br><b>Sistemática:</b> ${html(c.sist)}<br><b>Tradicional:</b> ${html(c.trad)}<br><b>Familia:</b> ${html(c.tipo)}<hr><b>Procedimiento:</b> ${html(c.pasos)}</div>`:'<div class="result error">No se encontró esta fórmula en la colección inicial. Revisá su escritura; ampliaremos la base de compuestos.</div>'}
+function buscarFormula(){let entrada=document.querySelector('#formula').value;let especial=window.analizarHidracido?.(entrada) || window.analizarOxoacido?.(entrada) || window.analizarOxidoEspecial?.(entrada) || window.analizarOxidoMetalico?.(entrada) || window.analizarOxidoNoMetalico?.(entrada) || window.analizarOxidoMetalicoAmpliado?.(entrada) || window.reconocerCompuestoIonico?.(entrada);let c=especial?{f:especial.tipo==='Hidrácido'?especial.formula+'(ac)':especial.formula,stock:especial.stock,sist:especial.sistematica || 'No incorporada para este compuesto',trad:especial.tradicional || especial.stock,tipo:especial.tipo,pasos:especial.pasos}:compuestos.find(x=>normF(x.f)===normF(entrada));if(!c){let r=window.analizarOxidoEspecial?.(entrada) || window.analizarOxidoMetalico?.(entrada) || window.analizarOxidoNoMetalico?.(entrada);if(r)c={f:r.formula,stock:r.stock,sist:r.sistematica,trad:r.tradicional,tipo:r.tipo,pasos:r.pasos};}document.querySelector('#resultado').innerHTML=c?`<div class="result"><div class="formula">${sub(c.f)}</div><b>Stock / nombre habitual:</b> ${html(c.stock)}<br><b>Sistemática:</b> ${html(c.sist)}<br><b>Tradicional:</b> ${html(c.trad)}<br><b>Familia:</b> ${html(c.tipo)}<hr><b>Procedimiento:</b> ${html(c.pasos)}</div>`:'<div class="result error">No se encontró esta fórmula en la colección inicial. Revisá su escritura; ampliaremos la base de compuestos.</div>'}
 
 function buscarNombre(){
   const entrada=document.querySelector('#nombre').value;
   const n=normN(entrada);
 
-  const generado=window.formularOxoacido?.(entrada) || window.convertirNombreAFormula?.(entrada);
+  const generado=window.formularHidracido?.(entrada) || window.formularOxoacido?.(entrada) || window.convertirNombreAFormula?.(entrada);
 
   const original=compuestos.find(
     x=>[x.stock,x.sist,x.trad].some(
@@ -37,7 +37,7 @@ function buscarNombre(){
 
   const c=generado
     ? {
-        f:generado.formula,
+        f:generado.tipo==='Hidrácido'?generado.formula+'(ac)':generado.formula,
         stock:generado.stock,
         tipo:generado.tipo,
         pasos:generado.pasos
