@@ -22,7 +22,42 @@ const normN=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().r
 const html=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const sub=s=>html(s).replace(/([0-9]+)/g,'<sub>$1</sub>');
 function buscarFormula(){let entrada=document.querySelector('#formula').value;let especial=window.analizarOxidoEspecial?.(entrada) || window.analizarOxidoMetalico?.(entrada) || window.analizarOxidoNoMetalico?.(entrada) || window.analizarOxidoMetalicoAmpliado?.(entrada) || window.reconocerCompuestoIonico?.(entrada);let c=especial?{f:especial.formula,stock:especial.stock,sist:especial.sistematica,trad:especial.tradicional,tipo:especial.tipo,pasos:especial.pasos}:compuestos.find(x=>normF(x.f)===normF(entrada));if(!c){let r=window.analizarOxidoEspecial?.(entrada) || window.analizarOxidoMetalico?.(entrada) || window.analizarOxidoNoMetalico?.(entrada);if(r)c={f:r.formula,stock:r.stock,sist:r.sistematica,trad:r.tradicional,tipo:r.tipo,pasos:r.pasos};}document.querySelector('#resultado').innerHTML=c?`<div class="result"><div class="formula">${sub(c.f)}</div><b>Stock / nombre habitual:</b> ${html(c.stock)}<br><b>Sistemática:</b> ${html(c.sist)}<br><b>Tradicional:</b> ${html(c.trad)}<br><b>Familia:</b> ${html(c.tipo)}<hr><b>Procedimiento:</b> ${html(c.pasos)}</div>`:'<div class="result error">No se encontró esta fórmula en la colección inicial. Revisá su escritura; ampliaremos la base de compuestos.</div>'}
-function buscarNombre(){let n=normN(document.querySelector('#nombre').value),c=compuestos.find(x=>[x.stock,x.sist,x.trad].some(y=>normN(y)===n));document.querySelector('#resultado-formula').innerHTML=c?`<div class="result"><div class="formula">${sub(c.f)}</div><b>Compuesto:</b> ${html(c.stock)}<br><b>Procedimiento:</b> ${html(c.pasos)}</div>`:'<div class="result error">Nombre no registrado en esta versión. Probá, por ejemplo, «cloruro de hierro(III)».</div>'}
+
+function buscarNombre(){
+  const entrada=document.querySelector('#nombre').value;
+  const n=normN(entrada);
+
+  const generado=window.convertirNombreAFormula?.(entrada);
+
+  const original=compuestos.find(
+    x=>[x.stock,x.sist,x.trad].some(
+      y=>normN(y)===n
+    )
+  );
+
+  const c=generado
+    ? {
+        f:generado.formula,
+        stock:generado.stock,
+        tipo:generado.tipo,
+        pasos:generado.pasos
+      }
+    : original;
+
+  document.querySelector('#resultado-formula').innerHTML=c
+    ? `<div class="result">
+         <div class="formula">${sub(c.f)}</div>
+         <b>Compuesto:</b> ${html(c.stock)}
+         <br><b>Familia:</b> ${html(c.tipo||'No especificada')}
+         <hr>
+         <b>Procedimiento:</b> ${html(c.pasos)}
+       </div>`
+    : `<div class="result error">
+         Nombre no reconocido.
+         Revisá la escritura y el número de oxidación.
+       </div>`;
+}
+
 document.querySelector('#analizar').onclick=buscarFormula;document.querySelector('#formular').onclick=buscarNombre;document.querySelector('#formula').addEventListener('keydown',e=>{if(e.key==='Enter')buscarFormula()});document.querySelector('#nombre').addEventListener('keydown',e=>{if(e.key==='Enter')buscarNombre()});
 document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.panel').forEach(x=>x.classList.toggle('active',x.id===b.dataset.tab))});
 const symbols='H He Li Be B C N O F Ne Na Mg Al Si P S Cl Ar K Ca Sc Ti V Cr Mn Fe Co Ni Cu Zn Ga Ge As Se Br Kr Rb Sr Y Zr Nb Mo Tc Ru Rh Pd Ag Cd In Sn Sb Te I Xe Cs Ba La Ce Pr Nd Pm Sm Eu Gd Tb Dy Ho Er Tm Yb Lu Hf Ta W Re Os Ir Pt Au Hg Tl Pb Bi Po At Rn Fr Ra Ac Th Pa U Np Pu Am Cm Bk Cf Es Fm Md No Lr Rf Db Sg Bh Hs Mt Ds Rg Cn Nh Fl Mc Lv Ts Og'.split(' ');
