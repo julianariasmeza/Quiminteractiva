@@ -21,13 +21,13 @@ const normF=s=>s.replace(/\s+/g,'').replace(/[₀₁₂₃₄₅₆₇₈₉]/g,
 const normN=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\s+/g,' ').replace(/\s*\(\s*/g,'(').replace(/\s*\)\s*/g,')').trim();
 const html=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const sub=s=>html(s).replace(/([0-9]+)/g,'<sub>$1</sub>');
-function buscarFormula(){let entrada=document.querySelector('#formula').value;let especial=window.analizarOxisalNeutra?.(entrada) || window.analizarHidroxido?.(entrada) || window.analizarHidruroMetalico?.(entrada) || window.analizarHidruroNoMetalico?.(entrada) || window.analizarSalBasica?.(entrada) || window.analizarHidracido?.(entrada) || window.analizarOxoacido?.(entrada) || window.analizarOxidoEspecial?.(entrada) || window.analizarOxidoMetalico?.(entrada) || window.analizarOxidoNoMetalico?.(entrada) || window.analizarOxidoMetalicoAmpliado?.(entrada) || window.reconocerCompuestoIonico?.(entrada) || window.analizarFormulaTradicional?.(entrada);let c=especial?{f:especial.tipo==='Hidrácido'?especial.formula+'(ac)':especial.formula,stock:especial.stock,sist:especial.sistematica || 'No incorporada para este compuesto',trad:especial.tradicional || especial.stock,tipo:especial.tipo,pasos:especial.pasos}:compuestos.find(x=>normF(x.f)===normF(entrada));if(!c){let r=window.analizarOxidoEspecial?.(entrada) || window.analizarOxidoMetalico?.(entrada) || window.analizarOxidoNoMetalico?.(entrada);if(r)c={f:r.formula,stock:r.stock,sist:r.sistematica,trad:r.tradicional,tipo:r.tipo,pasos:r.pasos};}const tradicionalAdicional=window.analizarFormulaTradicional?.(entrada);if(c&&tradicionalAdicional){c.trad=tradicionalAdicional.tradicional;}document.querySelector('#resultado').innerHTML=c?`<div class="result"><div class="formula">${sub(c.f)}</div><b>Stock / nombre habitual:</b> ${html(c.stock)}<br><b>Sistemática:</b> ${html(c.sist)}<br><b>Tradicional:</b> ${html(c.trad)}<br><b>Familia:</b> ${html(c.tipo)}<hr><b>Procedimiento:</b> ${html(c.pasos)}</div>`:'<div class="result error">No se encontró esta fórmula en la colección inicial. Revisá su escritura; ampliaremos la base de compuestos.</div>'}
+function buscarFormula(){let entrada=document.querySelector('#formula').value;let especial=window.analizarOxisalNeutra?.(entrada) || window.analizarHidroxido?.(entrada) || window.analizarHidruroMetalico?.(entrada) || window.analizarHidruroNoMetalico?.(entrada) || window.analizarSalBasica?.(entrada) || window.analizarHidracido?.(entrada) || window.analizarOxoacido?.(entrada) || window.analizarOxidoEspecial?.(entrada) || window.analizarOxidoMetalico?.(entrada) || window.analizarOxidoNoMetalico?.(entrada) || window.analizarOxidoMetalicoAmpliado?.(entrada) || window.reconocerCompuestoIonico?.(entrada) || window.analizarFormulaTradicional?.(entrada) || window.analizarEstequiometrica?.(entrada);let c=especial?{f:especial.tipo==='Hidrácido'?especial.formula+'(ac)':especial.formula,stock:especial.stock,sist:especial.sistematica || 'No incorporada para este compuesto',trad:especial.tradicional || especial.stock,tipo:especial.tipo,pasos:especial.pasos}:compuestos.find(x=>normF(x.f)===normF(entrada));if(!c){let r=window.analizarOxidoEspecial?.(entrada) || window.analizarOxidoMetalico?.(entrada) || window.analizarOxidoNoMetalico?.(entrada);if(r)c={f:r.formula,stock:r.stock,sist:r.sistematica,trad:r.tradicional,tipo:r.tipo,pasos:r.pasos};}const tradicionalAdicional=window.analizarFormulaTradicional?.(entrada);if(c&&tradicionalAdicional){c.trad=tradicionalAdicional.tradicional;}document.querySelector('#resultado').innerHTML=c?`<div class="result"><div class="formula">${sub(c.f)}</div><b>Stock / nombre habitual:</b> ${html(c.stock)}<br><b>Sistemática:</b> ${html(c.sist)}<br><b>Tradicional:</b> ${html(c.trad)}<br><b>Familia:</b> ${html(c.tipo)}<hr><b>Procedimiento:</b> ${html(c.pasos)}</div>`:'<div class="result error">No se encontró esta fórmula en la colección inicial. Revisá su escritura; ampliaremos la base de compuestos.</div>'}
 
 function buscarNombre(){
   const entrada=document.querySelector('#nombre').value;
   const n=normN(entrada);
 
-  const generado=window.formularOxisalNeutra?.(entrada) || window.formularHidroxido?.(entrada) || window.formularHidruroMetalico?.(entrada) || window.formularHidruroNoMetalico?.(entrada) || window.formularSalBasica?.(entrada) || window.formularHidracido?.(entrada) || window.formularOxoacido?.(entrada) || window.formularNombreTradicional?.(entrada) || window.convertirNombreAFormula?.(entrada);
+  const generado=window.formularOxisalNeutra?.(entrada) || window.formularHidroxido?.(entrada) || window.formularHidruroMetalico?.(entrada) || window.formularHidruroNoMetalico?.(entrada) || window.formularSalBasica?.(entrada) || window.formularHidracido?.(entrada) || window.formularOxoacido?.(entrada) || window.formularNombreTradicional?.(entrada) || window.formularEstequiometrica?.(entrada) || window.convertirNombreAFormula?.(entrada);
 
   const original=compuestos.find(
     x=>[x.stock,x.sist,x.trad].some(
@@ -77,8 +77,43 @@ const noble=new Set(['He','Ne','Ar','Kr','Xe','Rn','Og']);const nonmetal=new Set
 const table=document.querySelector('#periodica');
 function tile(n,row,col){let s=symbols[n-1],el=document.createElement('button');el.className='element '+(noble.has(s)?'noble':nonmetal.has(s)?'nonmetal':'metal');el.style.gridRow=row;el.style.gridColumn=col;el.innerHTML=`<small>${n}</small><strong>${s}</strong><small>${names[n-1]}</small>`;el.title=names[n-1];el.onclick=()=>{document.querySelectorAll('.element').forEach(x=>x.classList.remove('selected'));el.classList.add('selected');document.querySelector('#elemento-info').innerHTML=`<b>${html(names[n-1])} (${s})</b><br>Número atómico: ${n}<br>Estados de oxidación comunes: ${ox[s]||'No incorporados todavía en la ficha didáctica.'}`};table.append(el)}
 // Explicit long-form grid: rows 1–7, then lanthanoids and actinoids.
-const layout=[];let starts=[1,3,11,19,37,55,87];for(let r=1;r<=7;r++){let start=starts[r-1],len=[2,8,8,18,18,32,32][r-1];for(let k=0;k<len;k++){let n=start+k;if((r===6&&n>=58&&n<=71)||(r===7&&n>=90&&n<=103))continue;let col;if(r===1)col=k===0?1:18;else if(r<=3)col=k<2?k+1:k+11;else if(r<=5)col=k+1;else col=k<3?k+1:k-11;layout.push({n,r,col})}}
-layout.forEach(x=>tile(x.n,x.r,x.col));for(let n=58;n<=71;n++)tile(n,9,n-54);for(let n=90;n<=103;n++)tile(n,10,n-86);
+const layout = [];
+
+const periodos = [
+  [1, 2],
+  [3, 10],
+  [11, 18],
+  [19, 36],
+  [37, 54],
+  [55, 86],
+  [87, 118]
+];
+
+for (let r = 1; r <= 7; r++) {
+  const [inicio, fin] = periodos[r - 1];
+
+  for (let n = inicio; n <= fin; n++) {
+    if ((n >= 57 && n <= 70) ||
+        (n >= 89 && n <= 102)) continue;
+
+    let col;
+
+    if (r === 1) {
+      col = n === 1 ? 1 : 18;
+    } else if (r <= 3) {
+      const k = n - inicio;
+      col = k < 2 ? k + 1 : k + 11;
+    } else if (r <= 5) {
+      col = n - inicio + 1;
+    } else {
+      const k = n - inicio;
+      col = k < 2 ? k + 1 : k - 13;
+    }
+
+    layout.push({n, r, col});
+  }
+}
+layout.forEach(x=>tile(x.n,x.r,x.col));for(let n=57;n<=70;n++)tile(n,9,n-53);for(let n=89;n<=102;n++)tile(n,10,n-85);
 
 const practicaExtra = [["Li2O", "Óxido de litio", "Dos litios con +1 compensan al oxígeno con -2."], ["Na2O", "Óxido de sodio", "Dos sodios con +1 compensan al oxígeno con -2."], ["K2O", "Óxido de potasio", "Dos potasios con +1 compensan al oxígeno con -2."], ["MgO", "Óxido de magnesio", "El magnesio presenta +2 y el oxígeno -2."], ["CaO", "Óxido de calcio", "El calcio presenta +2 y el oxígeno -2."], ["BaO", "Óxido de bario", "El bario presenta +2 y el oxígeno -2."], ["Al2O3", "Óxido de aluminio", "Dos aluminios con +3 compensan tres oxígenos con -2."], ["ZnO", "Óxido de zinc", "El zinc presenta +2 y el oxígeno -2."], ["SnO", "Óxido de estaño(II)", "El estaño presenta +2 y el oxígeno -2."], ["SnO2", "Óxido de estaño(IV)", "El estaño presenta +4 y dos oxígenos suman -4."], ["CO", "Óxido de carbono(II)", "El carbono presenta +2 y el oxígeno -2."], ["SO2", "Óxido de azufre(IV)", "El azufre presenta +4 y dos oxígenos suman -4."], ["NO", "Óxido de nitrógeno(II)", "El nitrógeno presenta +2 y el oxígeno -2."], ["NO2", "Óxido de nitrógeno(IV)", "El nitrógeno presenta +4 y dos oxígenos suman -4."], ["N2O3", "Óxido de nitrógeno(III)", "Dos nitrógenos suman +6 y tres oxígenos -6."], ["N2O5", "Óxido de nitrógeno(V)", "Dos nitrógenos suman +10 y cinco oxígenos -10."], ["P2O3", "Óxido de fósforo(III)", "Dos fósforos suman +6 y tres oxígenos -6."], ["P2O5", "Óxido de fósforo(V)", "Dos fósforos suman +10 y cinco oxígenos -10."], ["Cl2O", "Óxido de cloro(I)", "Dos cloros suman +2 y un oxígeno presenta -2."], ["Cl2O7", "Óxido de cloro(VII)", "Dos cloros suman +14 y siete oxígenos -14."], ["LiH", "Hidruro de litio", "El litio presenta +1 y el hidrógeno -1."], ["NaH", "Hidruro de sodio", "El sodio presenta +1 y el hidrógeno -1."], ["KH", "Hidruro de potasio", "El potasio presenta +1 y el hidrógeno -1."], ["CaH2", "Hidruro de calcio", "El calcio presenta +2 y dos hidrógenos suman -2."], ["BaH2", "Hidruro de bario", "El bario presenta +2 y dos hidrógenos suman -2."], ["AlH3", "Hidruro de aluminio", "El aluminio presenta +3 y tres hidrógenos suman -3."], ["LiOH", "Hidróxido de litio", "El litio +1 se combina con el ion hidróxido -1."], ["KOH", "Hidróxido de potasio", "El potasio +1 se combina con el ion hidróxido -1."], ["Mg(OH)2", "Hidróxido de magnesio", "El magnesio +2 necesita dos iones hidróxido."], ["Al(OH)3", "Hidróxido de aluminio", "El aluminio +3 necesita tres iones hidróxido."], ["Fe(OH)2", "Hidróxido de hierro(II)", "El hierro +2 se combina con dos iones hidróxido."], ["Fe(OH)3", "Hidróxido de hierro(III)", "El hierro +3 se combina con tres iones hidróxido."], ["CuOH", "Hidróxido de cobre(I)", "El cobre +1 se combina con un ion hidróxido."], ["Cu(OH)2", "Hidróxido de cobre(II)", "El cobre +2 necesita dos iones hidróxido."], ["Ba(OH)2", "Hidróxido de bario", "El bario +2 necesita dos iones hidróxido."], ["HBr", "Bromuro de hidrógeno", "El hidrógeno presenta +1 y el bromo -1."], ["HI", "Yoduro de hidrógeno", "El hidrógeno presenta +1 y el yodo -1."], ["HF", "Fluoruro de hidrógeno", "El hidrógeno presenta +1 y el flúor -1."], ["H2S", "Sulfuro de hidrógeno", "Dos hidrógenos suman +2 y el azufre -2."], ["H2CO3", "Ácido carbónico", "El carbono presenta +4 en este oxoácido."], ["H3PO4", "Ácido fosfórico", "El fósforo presenta +5 en este oxoácido."], ["HNO2", "Ácido nitroso", "El nitrógeno presenta +3 en este oxoácido."], ["H2SO3", "Ácido sulfuroso", "El azufre presenta +4 en este oxoácido."], ["HClO4", "Ácido perclórico", "El cloro presenta +7 en este oxoácido."], ["KCl", "Cloruro de potasio", "El potasio +1 y el cloro -1 forman una sal neutra."], ["CaCl2", "Cloruro de calcio", "El calcio +2 necesita dos cloruros -1."], ["MgCl2", "Cloruro de magnesio", "El magnesio +2 necesita dos cloruros -1."], ["Na2SO4", "Sulfato de sodio", "Dos sodios +1 compensan el ion sulfato -2."], ["KNO3", "Nitrato de potasio", "El potasio +1 compensa el ion nitrato -1."], ["Ca3(PO4)2", "Fosfato de calcio", "Tres calcios +2 compensan dos fosfatos -3."]].map(([f, stock, pasos]) => ({
   f, stock, pasos
@@ -102,4 +137,149 @@ function elegirPreguntaPractica() {
   return pendientesPractica.pop();
 }
 
-let score=0,total=0,active=null,answered=false;function next(){active=elegirPreguntaPractica();answered=false;document.querySelector('#pregunta').innerHTML=`<p>¿Cuál es el nombre correcto de <span class="formula">${sub(active.f)}</span>?</p>`;document.querySelector('#feedback').innerHTML='';let distract=bancoPractica.filter(x=>x!==active&&x.stock!==active.stock).sort(()=>Math.random()-.5).slice(0,3);let choices=[active,...distract].sort(()=>Math.random()-.5);let box=document.querySelector('#opciones');box.innerHTML='';choices.forEach(c=>{let b=document.createElement('button');b.className='choice';b.textContent=c.stock;b.onclick=()=>{if(answered)return;answered=true;total++;if(c===active)score++;box.querySelectorAll('button').forEach(btn=>{btn.disabled=true;if(btn.textContent===active.stock)btn.classList.add('correct');else if(btn===b)btn.classList.add('incorrect')});document.querySelector('#feedback').innerHTML=`<div class="result">${c===active?'¡Correcto!':'Respuesta correcta: '+html(active.stock)}<br>${html(active.pasos)}</div>`;document.querySelector('#puntaje').textContent=`Aciertos: ${score} de ${total}`};box.append(b)})}document.querySelector('#siguiente').onclick=next;next();
+
+let score = 0;
+let total = 0;
+let active = null;
+let answered = false;
+
+const selectorPractica = document.querySelector("#sistema-practica");
+
+const formulasEstequiometricas = [
+  "CO", "CO2", "SO2", "SO3", "NO", "NO2",
+  "N2O", "N2O3", "N2O5", "P2O3", "P2O5",
+  "Cl2O", "Cl2O3", "Cl2O5", "Cl2O7",
+  "PCl3", "PCl5", "SF6", "BCl3"
+];
+
+function obtenerBancoPractica() {
+  const sistema = selectorPractica.value;
+
+  if (sistema === "estequiometrica") {
+    return formulasEstequiometricas
+      .map(f => window.analizarEstequiometrica?.(f))
+      .filter(Boolean)
+      .map(x => ({
+        f: x.formula,
+        nombre: x.sistematica,
+        pasos: x.pasos
+      }));
+  }
+
+  if (sistema === "tradicional") {
+    return bancoPractica
+      .map(x => {
+        const resultado = window.analizarFormulaTradicional?.(x.f);
+        const nombre = resultado?.tradicional || x.trad;
+
+        return {
+          f: x.f,
+          nombre,
+          pasos: x.pasos
+        };
+      })
+      .filter(x =>
+        x.nombre &&
+        !/consultar|no incorporad|sin nombre/i.test(x.nombre)
+      );
+  }
+
+  return bancoPractica.map(x => ({
+    f: x.f,
+    nombre: x.stock,
+    pasos: x.pasos
+  })).filter(x => x.nombre);
+}
+
+let pendientesSistema = [];
+
+function siguientePractica() {
+  const sistema = selectorPractica.value;
+  const banco = obtenerBancoPractica();
+
+  if (!banco.length) {
+    document.querySelector("#pregunta").textContent =
+      "No hay ejercicios disponibles para este sistema.";
+    document.querySelector("#opciones").innerHTML = "";
+    return;
+  }
+
+  if (!pendientesSistema.length) {
+    pendientesSistema = [...banco].sort(() => Math.random() - 0.5);
+  }
+
+  active = pendientesSistema.pop();
+  answered = false;
+
+  const nombres = {
+    stock: "Stock",
+    tradicional: "tradicional",
+    estequiometrica: "estequiométrico"
+  };
+
+  document.querySelector("#pregunta").innerHTML =
+    `<p>¿Cuál es el nombre ${nombres[sistema]} de ` +
+    `<span class="formula">${sub(active.f)}</span>?</p>`;
+
+  document.querySelector("#feedback").innerHTML = "";
+
+  const distractores = banco
+    .filter(x => x.nombre !== active.nombre)
+    .sort(() => Math.random() - 0.5)
+    .slice(0, 3);
+
+  const opciones = [active, ...distractores]
+    .sort(() => Math.random() - 0.5);
+
+  const contenedor = document.querySelector("#opciones");
+  contenedor.innerHTML = "";
+
+  opciones.forEach(opcion => {
+    const boton = document.createElement("button");
+    boton.className = "choice";
+    boton.textContent = opcion.nombre;
+
+    boton.onclick = () => {
+      if (answered) return;
+
+      answered = true;
+      total++;
+
+      if (opcion === active) score++;
+
+      contenedor.querySelectorAll("button").forEach(b => {
+        b.disabled = true;
+
+        if (b.textContent === active.nombre) {
+          b.classList.add("correct");
+        } else if (b === boton) {
+          b.classList.add("incorrect");
+        }
+      });
+
+      document.querySelector("#feedback").innerHTML =
+        `<div class="result">` +
+        (opcion === active
+          ? "¡Correcto!"
+          : "Respuesta correcta: " + html(active.nombre)) +
+        `<br>${html(active.pasos || "")}</div>`;
+
+      document.querySelector("#puntaje").textContent =
+        `Aciertos: ${score} de ${total}`;
+    };
+
+    contenedor.append(boton);
+  });
+}
+
+selectorPractica.addEventListener("change", () => {
+  pendientesSistema = [];
+  score = 0;
+  total = 0;
+  document.querySelector("#puntaje").textContent = "Aciertos: 0 de 0";
+  siguientePractica();
+});
+
+document.querySelector("#siguiente").onclick = siguientePractica;
+
+siguientePractica();

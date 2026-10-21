@@ -13,7 +13,7 @@
 <section id="nombres" class="panel active"><div class="card"><h2>Identificar un compuesto</h2><p class="muted">Ingresá una fórmula de la colección inicial, por ejemplo: FeCl3, Fe2O3, Ca(OH)2, HCl o H2SO4.</p><label for="formula">Fórmula química</label><input id="formula" placeholder="Ej. FeCl3" autocomplete="off"><p><button class="btn primary" id="analizar">Analizar fórmula</button></p><div id="resultado" aria-live="polite"></div></div></section>
 <section id="formulas" class="panel"><div class="card"><h2>Obtener una fórmula a partir del nombre</h2><label for="nombre">Nombre del compuesto</label><input id="nombre" placeholder="Ej. cloruro de hierro(III)"><p><button class="btn primary" id="formular">Buscar fórmula</button></p><div id="resultado-formula" aria-live="polite"></div><p class="muted">Reconoce nombres Stock de compuestos iónicos incluidos en la base química y muestra su formulación mediante equilibrio de cargas.</p></div></section>
 <section id="tabla" class="panel"><div class="card"><h2>Tabla periódica interactiva</h2><p class="muted">Seleccioná un elemento para consultar su símbolo, número atómico y estados de oxidación comunes. Se muestran los 118 elementos; los estados de oxidación son una selección didáctica.</p><div id="periodica" class="periodic" aria-label="Tabla periódica"></div><div id="elemento-info" class="result" aria-live="polite">Seleccioná un elemento.</div></div></section>
-<section id="practica" class="panel"><div class="card"><h2>Práctica de nomenclatura</h2><p class="muted">Elegí el nombre Stock correcto para la fórmula indicada.</p><div id="pregunta"></div><div id="opciones" class="choices"></div><div id="feedback" aria-live="polite"></div><p><button class="btn primary" id="siguiente">Siguiente ejercicio</button></p><p id="puntaje" class="muted"></p></div></section></main>
+<section id="practica" class="panel"><div class="card"><h2>Práctica de nomenclatura</h2><p class="muted">Elegí el nombre Stock correcto para la fórmula indicada.</p><p><label for="sistema-practica">Sistema de nomenclatura:</label> <select id="sistema-practica"><option value="stock">Stock</option><option value="tradicional">Tradicional</option><option value="estequiometrica">Estequiométrica</option></select></p><div id="pregunta"></div><div id="opciones" class="choices"></div><div id="feedback" aria-live="polite"></div><p><button class="btn primary" id="siguiente">Siguiente ejercicio</button></p><p id="puntaje" class="muted"></p></div></section></main>
 <footer class="footer-quiminteractiva">
   <div class="footer-contenido">
     <h2>¿Necesitás ayuda con Química?</h2>
@@ -74,6 +74,7 @@
 <script src="js/hidruros_no_metalicos.js"></script>
 <script src="js/hidroxidos.js"></script>
 <script src="js/oxisales_neutras.js"></script>
+<script src="js/estequiometrica.js"></script>
 <script src="js/app.js?v=practica-116"></script><script src="js/tabla_mejorada.js"></script>
 <script src="js/datos_elementos.js?v=118"></script>
 <script src="js/ejemplos_elementos.js?v=1"></script>
