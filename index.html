@@ -2,17 +2,38 @@
 <html lang="es">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Nomenclatura Química CR</title>
+<title>Quiminteractiva | Plataforma educativa de química</title>
 <link rel="stylesheet" href="estilos.css">
 <link rel="stylesheet" href="estilos_tabla.css?v=2">
 <link rel="stylesheet" href="estilos_herramientas.css?v=1">
+  <meta name="description" content="Plataforma educativa gratuita de química: formulación, nomenclatura y práctica interactiva para secundaria y universidad.">
 </head>
-<body><header><h1>⚗️ Nomenclatura Química CR</h1><p>Formulación, nomenclatura y práctica interactiva · Secundaria y universidad</p></header>
+<body><header><h1>⚗️ Quiminteractiva</h1><p>Plataforma educativa de química · Secundaria y universidad</p></header>
 <main><nav class="tabs" aria-label="Secciones"><button class="active" data-tab="nombres">Fórmula → nombre</button><button data-tab="formulas">Nombre → fórmula</button><button data-tab="tabla">Tabla periódica</button><button data-tab="practica">Práctica</button></nav>
 <section id="nombres" class="panel active"><div class="card"><h2>Identificar un compuesto</h2><p class="muted">Ingresá una fórmula de la colección inicial, por ejemplo: FeCl3, Fe2O3, Ca(OH)2, HCl o H2SO4.</p><label for="formula">Fórmula química</label><input id="formula" placeholder="Ej. FeCl3" autocomplete="off"><p><button class="btn primary" id="analizar">Analizar fórmula</button></p><div id="resultado" aria-live="polite"></div></div></section>
 <section id="formulas" class="panel"><div class="card"><h2>Obtener una fórmula a partir del nombre</h2><label for="nombre">Nombre del compuesto</label><input id="nombre" placeholder="Ej. cloruro de hierro(III)"><p><button class="btn primary" id="formular">Buscar fórmula</button></p><div id="resultado-formula" aria-live="polite"></div><p class="muted">Reconoce nombres Stock de compuestos iónicos incluidos en la base química y muestra su formulación mediante equilibrio de cargas.</p></div></section>
 <section id="tabla" class="panel"><div class="card"><h2>Tabla periódica interactiva</h2><p class="muted">Seleccioná un elemento para consultar su símbolo, número atómico y estados de oxidación comunes. Se muestran los 118 elementos; los estados de oxidación son una selección didáctica.</p><div id="periodica" class="periodic" aria-label="Tabla periódica"></div><div id="elemento-info" class="result" aria-live="polite">Seleccioná un elemento.</div></div></section>
-<section id="practica" class="panel"><div class="card"><h2>Práctica de nomenclatura</h2><p class="muted">Elegí el nombre Stock correcto para la fórmula indicada.</p><div id="pregunta"></div><div id="opciones" class="choices"></div><div id="feedback" aria-live="polite"></div><p><button class="btn primary" id="siguiente">Siguiente ejercicio</button></p><p id="puntaje" class="muted"></p></div></section></main><footer>Herramienta educativa · Funciona sin servidor · Versión inicial</footer>
+<section id="practica" class="panel"><div class="card"><h2>Práctica de nomenclatura</h2><p class="muted">Elegí el nombre Stock correcto para la fórmula indicada.</p><div id="pregunta"></div><div id="opciones" class="choices"></div><div id="feedback" aria-live="polite"></div><p><button class="btn primary" id="siguiente">Siguiente ejercicio</button></p><p id="puntaje" class="muted"></p></div></section></main>
+<footer class="footer-quiminteractiva">
+  <div class="footer-contenido">
+    <h2>¿Necesitás ayuda con Química?</h2>
+    <p>
+      Tutorías de Matemática, Física y Química para secundaria y
+      universidad. Clases virtuales y presenciales.
+    </p>
+    <a class="footer-whatsapp"
+       href="https://wa.me/50670769371?text=Hola%2C%20estoy%20utilizando%20Quiminteractiva%20y%20deseo%20informaci%C3%B3n%20sobre%20las%20tutor%C3%ADas."
+       target="_blank"
+       rel="noopener noreferrer"
+       aria-label="Consultar por WhatsApp al 7076-9371">
+      💬 Consultar por WhatsApp: 7076-9371
+    </a>
+    <p class="footer-creditos">
+      Quiminteractiva · Herramienta educativa gratuita
+    </p>
+  </div>
+</footer>
+
 <script src="js/nomenclatura.js"></script>
 <script src="js/oxidos_no_metalicos.js"></script>
 <script src="js/oxidos_especiales.js"></script>

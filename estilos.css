@@ -85,3 +85,62 @@
     font-size: 2rem;
   }
 }
+
+
+/* IDENTIDAD QUIMINTERACTIVA */
+
+.footer-quiminteractiva {
+  padding: 45px 20px;
+  background: #0b1427;
+  border-top: 1px solid #334155;
+  color: #dbeafe;
+  text-align: center;
+}
+
+.footer-contenido {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.footer-contenido h2 {
+  margin-bottom: 14px;
+  color: #ffffff;
+  font-size: 1.6rem;
+}
+
+.footer-contenido p {
+  line-height: 1.7;
+}
+
+.footer-whatsapp {
+  display: inline-block;
+  margin: 20px auto;
+  padding: 14px 24px;
+  background: #16a34a;
+  color: #ffffff;
+  border-radius: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+
+.footer-whatsapp:hover {
+  background: #15803d;
+}
+
+.footer-creditos {
+  margin-top: 22px;
+  font-size: 0.85rem;
+  color: #94a3b8;
+}
+
+@media (max-width: 600px) {
+  .footer-contenido h2 {
+    font-size: 1.3rem;
+  }
+
+  .footer-whatsapp {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+}
