@@ -149,7 +149,10 @@ const formulasEstequiometricas = [
   "CO", "CO2", "SO2", "SO3", "NO", "NO2",
   "N2O", "N2O3", "N2O5", "P2O3", "P2O5",
   "Cl2O", "Cl2O3", "Cl2O5", "Cl2O7",
-  "PCl3", "PCl5", "SF6", "BCl3"
+  "PCl3", "PCl5", "SF6", "BCl3",
+  "CS2", "CCl4", "SiCl4", "SCl2", "NF3",
+  "IF5", "IF7", "BrF3", "BrF5", "ClF3",
+  "ClF5", "SF4", "PF3", "PF5", "BF3"
 ];
 
 function obtenerBancoPractica() {
